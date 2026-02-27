@@ -12,6 +12,7 @@
 # Build (se genera en Netlify con npm run build)
 js/dashboard.bundle.js
 js/reserva.bundle.js
+css/tailwind.css
 
 # Dependencias
 node_modules
