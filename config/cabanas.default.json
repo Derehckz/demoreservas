@@ -1,0 +1,23 @@
+{
+  "app": {
+    "nombreNegocio": "Cabañas Eli",
+    "tituloPanel": "Mis Cabañas",
+    "urlResena": "https://www.google.com/travel/hotels/s/tdNERUvQ6SgdXaZW8"
+  },
+  "principal": {
+    "nombre": "Cabaña Principal",
+    "maxPersonas": 6,
+    "precioExtraPorPersona": 10000,
+    "precioUnaNoche": 80000,
+    "precioVariasNoches": 70000,
+    "precioTinaja": 25000
+  },
+  "grande": {
+    "nombre": "Cabaña Grande",
+    "maxPersonas": 10,
+    "precioExtraPorPersona": 10000,
+    "precioUnaNoche": 120000,
+    "precioVariasNoches": 100000,
+    "precioTinaja": 30000
+  }
+}

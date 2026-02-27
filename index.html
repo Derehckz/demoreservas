@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0d9488">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Cabañas Eli - Reservas</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="manifest" href="/manifest.json">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700&display=swap" rel="stylesheet">
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { darkMode: 'class' };
+    </script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@latest/dist/driver.css"/>
+    <script src="/js/lib/estadoReserva.js"></script>
+    <script src="/js/config.js"></script>
+    <script>(function(){var n=(typeof APP_CONFIG!=='undefined'&&APP_CONFIG.nombreNegocio)||'Cabañas Eli';document.title=n+' - Reservas';})();</script>
+    <script src="https://cdn.jsdelivr.net/npm/driver.js@latest/dist/driver.js.iife.js"></script>
+    <script src="/js/tour.js"></script>
+    <link rel="stylesheet" href="/css/theme.css">
+    <script>
+        (function(){var t=localStorage.getItem('mis_reservas_theme');var d=t==='dark'||(t!=='light'&&typeof matchMedia!=='undefined'&&matchMedia('(prefers-color-scheme:dark)').matches);if(d)document.documentElement.classList.add('dark');})();
+    </script>
+    <style>
+        body { -webkit-overflow-scrolling:touch; min-height:100vh; font-family:'Plus Jakarta Sans',system-ui,sans-serif; background:linear-gradient(180deg,#fafaf9 0%,#f5f5f4 50%,#e7e5e4 100%)!important; -webkit-font-smoothing:antialiased; }
+        body.theme-2026 { background:linear-gradient(180deg,#fafaf9 0%,#f5f5f4 50%,#e7e5e4 100%)!important; }
+        input,select,textarea { font-size:16px!important; }
+        .font-heading { font-family:'Plus Jakarta Sans',system-ui,sans-serif; }
+        .modal-scroll { max-height:90vh; overflow-y:auto; -webkit-overflow-scrolling:touch; }
+        @media (orientation:landscape){ .modal-scroll{ max-height:85vh; } }
+    </style>
+</head>
+<body class="theme-2026">
+    <div id="root">
+    <div class="min-h-screen flex items-center justify-center p-4" style="background:linear-gradient(180deg,#fafaf9 0%,#f5f5f4 100%);font-family:'Plus Jakarta Sans',system-ui,sans-serif">
+        <div class="text-center">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-teal-500 to-teal-600 flex items-center justify-center mx-auto mb-4 text-3xl shadow-lg shadow-teal-500/25">🏡</div>
+            <p class="text-lg font-bold text-stone-800">Cargando panel...</p>
+            <p class="text-sm text-stone-500 mt-1 font-medium">Un momento</p>
+            <div class="mt-4 w-10 h-10 border-2 border-teal-200 border-t-teal-600 rounded-full animate-spin mx-auto" role="status" aria-live="polite" aria-label="Cargando"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function() {
+        if (sessionStorage.getItem('mis_reservas_auth') !== '1') {
+            window.location.replace('login.html');
+            return;
+        }
+        var token = sessionStorage.getItem('mis_reservas_token') || '';
+        var root = document.getElementById('root');
+
+        function showError(msg) {
+            var safeMsg = (typeof msg === 'string' && msg) ? msg : 'No se pudo cargar el panel. Prueba recargar o usar otro navegador.';
+            var wrap = document.createElement('div');
+            wrap.className = 'min-h-screen flex items-center justify-center p-4';
+            wrap.setAttribute('style', 'background:linear-gradient(180deg,#fafaf9 0%,#f5f5f4 100%);font-family:\'Plus Jakarta Sans\',system-ui,sans-serif');
+            wrap.innerHTML = '<div class="bg-white rounded-2xl shadow-xl border border-stone-200 p-8 max-w-sm w-full text-center">' +
+                '<div class="w-14 h-14 rounded-xl bg-red-100 flex items-center justify-center mx-auto mb-4 text-2xl" aria-hidden="true">⚠️</div>' +
+                '<h2 class="text-xl font-bold text-stone-800 mb-2">Error al cargar</h2>' +
+                '<p id="mis-reservas-error-msg" class="text-stone-600 text-sm mb-6"></p>' +
+                '<a href="login.html" class="block w-full bg-teal-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-teal-700 transition-colors">Volver al login</a>' +
+                '</div>';
+            var p = wrap.querySelector('#mis-reservas-error-msg');
+            if (p) p.textContent = safeMsg;
+            root.innerHTML = '';
+            root.appendChild(wrap);
+        }
+
+        function loadApp() {
+            // En producción usamos el bundle precompilado (sin Babel en el navegador)
+            var useBundle = true;
+            var s = document.createElement('script');
+            s.src = '/js/dashboard.bundle.js';
+            s.onerror = function() {
+                if (!useBundle) {
+                    showError('No se pudo cargar la aplicación. Comprueba la consola del navegador (F12).');
+                    return;
+                }
+                useBundle = false;
+                var s2 = document.createElement('script');
+                s2.type = 'text/babel';
+                s2.src = '/js/dashboard.js';
+                s2.onerror = function() { showError('No se pudo cargar la aplicación.'); };
+                document.body.appendChild(s2);
+            };
+            s.onload = function() {
+                if (useBundle) clearLoadingTimeout();
+            };
+            document.body.appendChild(s);
+            var loadingTimeout;
+            function clearLoadingTimeout() { if (loadingTimeout) clearTimeout(loadingTimeout); }
+            loadingTimeout = setTimeout(function() {
+                loadingTimeout = null;
+                var loading = root.querySelector('.animate-spin');
+                if (loading && loading.closest('#root')) {
+                    showError('La aplicación tarda en responder. Recarga la página o revisa la consola (F12).');
+                }
+            }, 15000);
+        }
+
+        fetch('/.netlify/functions/obtenerconfig', { headers: { 'Authorization': 'Bearer ' + token } })
+            .then(function(r) { return r.ok ? r.json() : Promise.resolve(null); })
+            .then(function(data) {
+                if (data && Object.keys(data).some(function(k){ return !k.startsWith('_'); })) {
+                    window.CABANAS = data;
+                    if (data._fallback && typeof showToast === 'function') {
+                        setTimeout(function() { showToast(data._error || data._message || 'Config por defecto'); }, 800);
+                    }
+                }
+            })
+            .catch(function() {})
+            .then(loadApp);
+    })();
+
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+            navigator.serviceWorker.register('/sw.js').catch(function () {});
+        });
+    }
+</script>
+</body>
+</html>

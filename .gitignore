@@ -1,0 +1,21 @@
+# Local Netlify folder
+.netlify
+
+# Variables de entorno — NUNCA subir al repositorio
+.env
+.env.local
+.env.test
+.env.production
+.env.*.local
+.AUDITORIA_TECNICA.md
+
+# Build (se genera en Netlify con npm run build)
+js/dashboard.bundle.js
+js/reserva.bundle.js
+
+# Dependencias
+node_modules
+
+# Sistema
+.DS_Store
+Thumbs.db

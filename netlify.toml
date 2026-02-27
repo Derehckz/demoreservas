@@ -1,0 +1,21 @@
+[build]
+  command = "npm run build"
+  functions = "netlify/functions"
+  publish = "."
+
+# Alertas push: 2 veces al día (8:00 y 14:00 UTC). Solo envía si hay alertas.
+[functions."enviaralertas"]
+  schedule = "0 8,14 * * *"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+[dev]
+  functions = "netlify/functions"
+  publish = "."
+  port = 8888

@@ -1,0 +1,18 @@
+# No publicar dependencias (las functions se empaquetan aparte)
+node_modules/
+
+# No publicar tests ni config de tests
+tests/
+jest.config.js
+*.test.js
+**/__tests__/
+
+# No publicar entorno local ni documentación interna
+.env
+.env.*
+.netlify/
+*.md
+!README.md
+
+# Opcional: no subir el bundle si lo generas en el build (ya está en .gitignore)
+# js/dashboard.bundle.js
