@@ -23,9 +23,9 @@ const CABANAS = {
   }
 };
 const APP_CONFIG = {
-  nombreNegocio: "Cabañas Eli",
-  tituloPanel: "Mis Cabañas",
-  urlResena: "https://www.google.com/travel/hotels/s/tdNERUvQ6SgdXaZW8"
+  nombreNegocio: "Demo Cabañas",
+  tituloPanel: "Panel Reservas Demo",
+  urlResena: ""
 };
 
 
@@ -202,8 +202,8 @@ function generarMsg(r, tipo) {
 
   const cabs = getCabanas();
   const cabanaInfo = cabs[r.cabana] || Object.values(cabs)[0];
-  const negocio = (typeof APP_CONFIG !== 'undefined' && APP_CONFIG.nombreNegocio) || 'Cabañas Eli';
-  const urlResena = (typeof APP_CONFIG !== 'undefined' && APP_CONFIG.urlResena) || 'https://www.google.com/travel/hotels/s/tdNERUvQ6SgdXaZW8';
+  const negocio = (typeof APP_CONFIG !== 'undefined' && APP_CONFIG.nombreNegocio) || 'Demo Cabañas';
+  const urlResena = (typeof APP_CONFIG !== 'undefined' && APP_CONFIG.urlResena) || '';
   if (tipo === 'confirmacion') return `Hola ${r.cliente}! 👋 Somos ${negocio}.\n\nTe confirmamos tu reserva:\n🏡 ${cabanaInfo.nombre}\n📅 Entrada: ${fe} desde las 16:00 hrs\n📅 Salida: ${fs2} hasta las 14:00 hrs\n🌙 ${n} noche${n>1?'s':''}\n👥 ${r.personas} persona${r.personas>1?'s':''}${tinTxt}\n\n💰 Total: $${(parseFloat(r.precioTotal)||0).toLocaleString('es-CL')}\n${saldo>0?`💵 Pagado: $${tp.toLocaleString('es-CL')}\n⚠️ Saldo pendiente: $${saldo.toLocaleString('es-CL')}`:'✅ Pagado completo'}\n\n¡Te esperamos! 😊`;
   if (tipo === 'recordatorio') return `Hola ${r.cliente}! Somos ${negocio} 🏡\n\nMañana es tu llegada a ${cabanaInfo.nombre}.\nCheck-in desde las 16:00 hrs · Check-out hasta las 14:00 hrs${saldo>0?`\n\n💰 Recuerda el saldo de $${saldo.toLocaleString('es-CL')}.`:''}\n\n¡Nos vemos mañana! 😊`;
   if (tipo === 'saldo') return `Hola ${r.cliente}! Somos ${negocio} 😊\n\nTe recordamos el saldo de $${saldo.toLocaleString('es-CL')} por tu reserva del ${fe}.\n¡Gracias! 🙏`;

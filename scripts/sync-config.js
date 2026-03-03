@@ -13,9 +13,9 @@ const defaults = JSON.parse(fs.readFileSync(defaultsPath, 'utf8'));
 const { app = {}, principal, grande } = defaults;
 const defaultCabanas = { principal, grande };
 const appConfig = {
-  nombreNegocio: app.nombreNegocio || 'Cabañas Eli',
-  tituloPanel: app.tituloPanel || 'Mis Cabañas',
-  urlResena: app.urlResena || 'https://www.google.com/travel/hotels/s/tdNERUvQ6SgdXaZW8',
+  nombreNegocio: app.nombreNegocio || 'Demo Cabañas',
+  tituloPanel: app.tituloPanel || 'Panel Reservas Demo',
+  urlResena: app.urlResena || '',
 };
 
 const toJs = (obj) => JSON.stringify(obj, null, 2).replace(/"([^"]+)":/g, '$1:');

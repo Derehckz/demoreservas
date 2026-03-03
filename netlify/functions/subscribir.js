@@ -34,7 +34,7 @@ exports.handler = async (event) => {
     return jsonResponse(200, { ok: true, message: 'Suscripción guardada' });
   } catch (err) {
     if (err.code === '42P01') {
-      return jsonResponse(500, { error: 'Ejecuta la migración SQL migracion_push_subscriptions.sql en Neon' });
+      return jsonResponse(500, { error: 'Ejecuta el script SQL full_schema_and_migrations.sql en Neon (sección push_subscriptions)' });
     }
     console.error('subscribir:', err);
     return jsonResponse(500, { error: 'Error al guardar la suscripción' });

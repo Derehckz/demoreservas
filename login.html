@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cabañas Eli</title>
+  <title>Panel Reservas Demo</title>
   <script src="/js/config.js"></script>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -70,8 +70,8 @@
       <div class="brand-icon rounded-2xl flex items-center justify-center mx-auto mb-4 text-3xl">
         🏡
       </div>
-      <h1 id="brandTitle" class="text-2xl font-bold text-stone-800 tracking-tight">Cabañas Eli</h1>
-      <p class="text-stone-500 text-sm mt-1.5 font-medium">Panel de reservas</p>
+      <h1 id="brandTitle" class="text-2xl font-bold text-stone-800 tracking-tight">Demo Cabañas</h1>
+      <p class="text-stone-500 text-sm mt-1.5 font-medium">Panel de reservas · DEMO (datos ficticios)</p>
     </div>
 
     <div id="errorMsg" class="hidden bg-red-50 border border-red-200/80 text-red-700 rounded-xl p-3.5 mb-4 text-sm text-center font-medium"></div>
@@ -163,8 +163,8 @@
     })();
 
     (function(){
-      var n=(typeof APP_CONFIG!=='undefined'&&APP_CONFIG.nombreNegocio)||'Cabañas Eli';
-      document.title=n;
+      var n=(typeof APP_CONFIG!=='undefined'&&APP_CONFIG.nombreNegocio)||'Demo Cabañas';
+      document.title=n + ' · DEMO';
       var el=document.getElementById('brandTitle');
       if(el)el.textContent=n;
     })();

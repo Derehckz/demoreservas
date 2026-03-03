@@ -1,8 +1,8 @@
 {
   "app": {
-    "nombreNegocio": "Cabañas Eli",
-    "tituloPanel": "Mis Cabañas",
-    "urlResena": "https://www.google.com/travel/hotels/s/tdNERUvQ6SgdXaZW8"
+    "nombreNegocio": "Demo Cabañas",
+    "tituloPanel": "Panel Reservas Demo",
+    "urlResena": ""
   },
   "principal": {
     "nombre": "Cabaña Principal",

@@ -149,7 +149,7 @@ exports.handler = async (event) => {
     const mes = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'][hoyFecha.getMonth()];
     const fechaCorta = `${diaSemana} ${diaMes} ${mes}`;
 
-    let title = 'Cabañas Eli';
+    let title = 'Demo Cabañas';
     let message = 'Todo tranquilo hoy.';
     let url = '/';
     let requireInteraction = false;
@@ -179,7 +179,7 @@ exports.handler = async (event) => {
       message = parts.join('\n');
       url = '/#alertas';
     } else {
-      title = `Cabañas Eli · ${fechaCorta}`;
+      title = `Demo Cabañas · ${fechaCorta}`;
     }
 
     // Solo enviar si hay alertas; si está todo tranquilo, no molestar

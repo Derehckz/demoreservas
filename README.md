@@ -1,6 +1,58 @@
-# Mis Cabañas (Cabañas Eli)
+# Panel de reservas (DEMO)
 
-Sistema de gestión de reservas para dos cabañas (Principal y Grande): panel de control, calendario, alertas, pagos/abonos, tinaja, mensajes WhatsApp y respaldo.
+Demo de sistema de gestión de reservas para cabañas (por ejemplo, dos cabañas: Principal y Grande): panel de control, calendario, alertas, pagos/abonos, tinaja, mensajes WhatsApp y respaldo. Todos los datos pueden ser ficticios en el ambiente de demo.
+
+---
+
+## Resumen para presentar a clientes
+
+- **Qué es**: Un panel web para gestionar reservas de cabañas desde cualquier dispositivo (PC, tablet o celular), con vista calendario, lista, alertas y reportes simples.
+- **Para qué sirve**: Centraliza todas las reservas, evita choques de fechas, controla saldos pendientes y gastos asociados a cada cabaña.
+- **Ventajas clave**:
+  - Agenda visual tipo calendario con disponibilidad por cabaña.
+  - Flujo guiado para crear/editar reservas (datos del cliente, fechas, tinaja, pagos).
+  - Alertas automáticas de:
+    - Llegan hoy / salen hoy.
+    - Reservas sin confirmar.
+    - Saldos pendientes.
+    - Reservas sin teléfono.
+    - Tinaja hoy/mañana.
+  - Mensajes de WhatsApp listos para copiar y enviar al cliente.
+  - Registro de **gastos por cabaña** (luz, gas, internet, aseo, mantenimiento) para ver un resumen simple del mes.
+  - Modo oscuro, uso cómodo en celular y posibilidad de instalar como app (PWA).
+
+### Cómo mostrar la demo en una reunión
+
+1. **Login**  
+   - Entrar con la contraseña de demo y explicar que todo lo que se ve son datos ficticios.
+
+2. **Dashboard / Inicio**  
+   - Mostrar el resumen del día, las tarjetas de alertas y el resumen del mes.
+   - Comentar que las alertas ayudan a no olvidar confirmaciones ni cobros.
+
+3. **Calendario**  
+   - Navegar por el calendario y mostrar cómo se ve la ocupación por cabaña.
+   - Hacer clic en una reserva para abrirla rápido.
+
+4. **Crear o editar una reserva**  
+   - Desde el botón “Nueva reserva” o desde un hueco en el calendario:
+     - Paso 1: datos del cliente.
+     - Paso 2: fechas, cabaña, personas, tinaja.
+     - Paso 3: pagos/abonos y saldo.
+   - Guardar y mostrar cómo se refleja en el calendario y en el dashboard.
+
+5. **Mensajes WhatsApp**  
+   - Abrir una reserva y generar el texto de confirmación: mostrar que con un botón se crea el mensaje con fechas, monto y saldo listo para pegar en WhatsApp.
+
+6. **Gastos y resumen**  
+   - Ir a la sección de gastos/pagos del mes, enseñar cómo cargar luz/gas/aseo y cómo el panel los resume por cabaña.
+
+7. **Config de cabañas (opcional)**  
+   - Mostrar que se pueden cambiar nombres, precios, capacidad y activar/desactivar cabañas sin tocar código.
+
+> En la demo, todos los nombres de clientes, números y montos son de prueba, pero en producción se conectaría a la base de datos real del negocio del cliente.
+
+---
 
 ## Stack
 
@@ -38,7 +90,7 @@ Para no tocar datos reales, usa una **base de datos Neon separada** para pruebas
    - Crea una **nueva base de datos** (p. ej. `neondb_test`), o
    - Usa un **Branch** (copia de la BD) y toma su connection string.
 2. **En el proyecto:** Copia `.env.example` a `.env.test` y pon la URL de esa base de pruebas en `NETLIFY_DATABASE_URL` (y `LOGIN_PASSWORD` si quieres).
-3. **Ejecutar migraciones en la BD de pruebas:** En Neon, en la BD de pruebas, ejecuta en el SQL Editor los archivos en `SQL/`: `crear_tabla_reservas_completa.sql`, `migracion_admin_settings.sql`, `migracion_created_updated_at.sql`, `migracion_config_cabanas.sql`, `migracion_cabanas_activa.sql`, `migracion_gastos.sql`.
+3. **Ejecutar migraciones en la BD de pruebas:** En Neon, en la BD de pruebas, ejecuta en el SQL Editor el archivo consolidado en `SQL/full_schema_and_migrations.sql`. (Opcionalmente, puedes ejecutar también `SQL/demo_seed.sql` para cargar datos ficticios de ejemplo).
 4. **Arrancar en modo pruebas:**
    ```bash
    npm install
@@ -63,7 +115,7 @@ Genera claves VAPID: `node scripts/generate-vapid.js`. Copia `.env.example` a `.
 
 1. **En local:** usa `npx netlify dev` (no abras el HTML con `file://` ni solo con `npx serve`).
 2. **Variables:** comprueba que `.env` tenga `NETLIFY_DATABASE_URL` (URL de Neon) y `LOGIN_PASSWORD` con valores reales (no "CAMBIA_ESTA_CONTRASENA").
-3. **Base de datos:** en [Neon SQL Editor](https://console.neon.tech) ejecuta las migraciones en `SQL/`: `crear_tabla_reservas_completa.sql`, `migracion_config_cabanas.sql`, `migracion_cabanas_activa.sql`, `migracion_admin_settings.sql`, `migracion_gastos.sql`, etc.
+3. **Base de datos:** en [Neon SQL Editor](https://console.neon.tech) ejecuta el script consolidado en `SQL/full_schema_and_migrations.sql` (y, si quieres datos de ejemplo, `SQL/demo_seed.sql`).
 4. **Respuesta del servidor:** en DevTools → pestaña Network, abre la petición que devuelve 500 y revisa la pestaña "Response"; el cuerpo suele incluir un mensaje (ej. "Falta LOGIN_PASSWORD" o "relation \"reservas\" does not exist").
 
 ## Despliegue en Netlify
@@ -89,15 +141,9 @@ Genera claves VAPID: `node scripts/generate-vapid.js`. Copia `.env.example` a `.
 
 ## Base de datos
 
-Las migraciones están en `SQL/`. Ejecutar una vez en Neon (SQL Editor):
+Las migraciones están consolidadas en `SQL/full_schema_and_migrations.sql`. Ejecutar una vez en Neon (SQL Editor) sobre la base de datos que quieras usar para la app (idealmente una BD separada para demo).
 
-- **Tabla principal:** `crear_tabla_reservas_completa.sql` — tabla e índices.
-- **Auditoría:** `migracion_created_updated_at.sql` — añade `created_at` y `updated_at` a `reservas`.
-- **Cerrar sesión en todos:** `migracion_admin_settings.sql` — tabla `admin_settings` para invalidar tokens.
-- **Cabañas y precios:** `migracion_config_cabanas.sql` — tabla `config_cabanas` (nombre, capacidad, precios y tinaja por cabaña).
-- **Cabañas dinámicas:** `migracion_cabanas_activa.sql` — columnas `activa` y `orden` para gestionar cabañas desde Config.
-- **Gastos:** `migracion_gastos.sql` — tabla `gastos` (cabana, tipo, monto, periodo YYYY-MM, fecha_pago, nota).
-- **Push (opcional):** `migracion_push_subscriptions.sql` — tabla `push_subscriptions` para notificaciones push.
+Si quieres partir con datos ficticios para mostrar la demo, ejecuta después `SQL/demo_seed.sql` en esa misma base de datos.
 
 ## Sesión y seguridad
 
@@ -138,7 +184,7 @@ Las migraciones están en `SQL/`. Ejecutar una vez en Neon (SQL Editor):
 ## PWA, Push, Check-in/out y Modo oscuro
 
 - **PWA:** La app es instalable. `manifest.json`, `sw.js` e iconos en `icons/`. El navegador ofrece "Agregar a pantalla de inicio".
-- **Notificaciones push:** En Config → Activar notificaciones. Requiere `VAPID_PUBLIC_KEY` y `VAPID_PRIVATE_KEY` en Netlify, y ejecutar `migracion_push_subscriptions.sql`. Se envían 2 veces al día (8:00 y 14:00 UTC, aprox. 4–5 AM y 9–10 AM Chile) **solo cuando hay alertas** (llegan hoy, salen hoy, saldo pendiente, sin confirmar, sin teléfono, tinaja). Título con fecha, mensaje por líneas, y al tocar abre la sección de alertas.
+- **Notificaciones push:** En Config → Activar notificaciones. Requiere `VAPID_PUBLIC_KEY` y `VAPID_PRIVATE_KEY` en Netlify, y haber ejecutado la parte de `push_subscriptions` dentro de `SQL/full_schema_and_migrations.sql`. Se envían 2 veces al día (8:00 y 14:00 UTC, aprox. 4–5 AM y 9–10 AM Chile) **solo cuando hay alertas** (llegan hoy, salen hoy, saldo pendiente, sin confirmar, sin teléfono, tinaja). Título con fecha, mensaje por líneas, y al tocar abre la sección de alertas.
 - **Check-in/Check-out rápido:** Botones en Alertas, Lista, Calendario y Dashboard para marcar check-in o check-out sin abrir el detalle.
 - **Modo oscuro:** Toggle ☀️/🌙 en el header. Se guarda en localStorage y respeta `prefers-color-scheme` si no hay preferencia guardada.
 
@@ -148,8 +194,8 @@ Las migraciones están en `SQL/`. Ejecutar una vez en Neon (SQL Editor):
 - **Build con esbuild:** Bundles precompilados; Babel solo como fallback si falla la carga.
 - **Tests unitarios:** Jest para `_utils` (toDateStr, safeParseJson, jsonResponse…) y `estadoReserva` (pendiente, confirmada, checkin, completada, cancelada).
 - **Config sync:** `config/cabanas.default.json` + `npm run sync-config` para mantener valores por defecto.
-- **Configuración en BD:** Cabañas y precios (incl. tinaja) se guardan en la tabla `config_cabanas`. Nueva pestaña "Config" en el panel para editarlos sin tocar código.
-- **Cabañas dinámicas:** En Config puedes agregar, editar y activar/desactivar cabañas. Las inactivas no aparecen al crear nuevas reservas. Ejecuta `migracion_cabanas_activa.sql` antes de usar esta función.
+- **Configuración en BD:** Cabañas y precios (incl. tinaja) se guardan en la tabla `config_cabanas`. Nueva pestaña "Config" en el panel para editarlos sin tocar código (la tabla se crea como parte de `SQL/full_schema_and_migrations.sql`).
+- **Cabañas dinámicas:** En Config puedes agregar, editar y activar/desactivar cabañas. Las inactivas no aparecen al crear nuevas reservas. Las columnas necesarias también se crean con `SQL/full_schema_and_migrations.sql`.
 - Filtros en Lista: por cabaña, estado y rango de fechas.
 - Auditoría: `created_at` / `updated_at` en reservas; se muestran en el detalle.
 - Validaciones en reserva: salida ≥ entrada, mensajes claros de conflicto, entrada máxima 1 año.

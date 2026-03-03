@@ -1,7 +1,7 @@
 {
-  "name": "Cabañas Eli - Reservas",
-  "short_name": "Cabañas Eli",
-  "description": "Panel de gestión de reservas para Cabañas Eli",
+  "name": "Panel Reservas Demo",
+  "short_name": "Reservas Demo",
+  "description": "Panel de gestión de reservas para demostración de cabañas (datos ficticios)",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait-primary",

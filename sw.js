@@ -1,5 +1,5 @@
-// Service Worker — PWA + Push notifications para Cabañas Eli
-const CACHE_NAME = 'cabanas-eli-v2';
+// Service Worker — PWA + Push notifications para demo de reservas de cabañas
+const CACHE_NAME = 'reservas-demo-v1';
 const urlsToCache = ['/', '/index.html', '/reserva.html', '/favicon.svg', '/css/theme.css', '/manifest.json'];
 
 self.addEventListener('install', (event) => {
@@ -35,7 +35,7 @@ self.addEventListener('push', (event) => {
   try {
     data = event.data.json();
   } catch {
-    data = { title: 'Cabañas Eli', body: event.data.text() || 'Nueva notificación' };
+    data = { title: 'Demo Cabañas', body: event.data.text() || 'Nueva notificación' };
   }
   const options = {
     body: data.body || 'Nueva alerta',
@@ -46,7 +46,7 @@ self.addEventListener('push', (event) => {
     data: data.url ? { url: data.url } : {},
   };
   event.waitUntil(
-    self.registration.showNotification(data.title || 'Cabañas Eli', options)
+    self.registration.showNotification(data.title || 'Demo Cabañas', options)
   );
 });
 

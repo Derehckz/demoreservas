@@ -388,8 +388,22 @@ const Header = ({ reservas, avisoResp, exportar, onVerTour, setVista, showPassMo
                 <div className="flex items-center gap-3 min-w-0">
                     <span className="text-2xl shrink-0" aria-hidden>🏡</span>
                     <div className="min-w-0">
-                        <h1 className="font-heading font-bold text-gray-800 dark:text-stone-100 text-lg truncate">{(typeof APP_CONFIG !== 'undefined' && APP_CONFIG.tituloPanel) || 'Mis Cabañas'}</h1>
-                        <p className="text-xs text-gray-500 dark:text-stone-400 truncate">{reservas.length} reservas{avisoResp&&<span className="ml-1 text-yellow-600 dark:text-yellow-500 font-bold"> · ⚠️ Respaldo pendiente</span>}</p>
+                        <div className="flex items-center gap-2">
+                            <h1 className="font-heading font-bold text-gray-800 dark:text-stone-100 text-lg truncate">
+                                {(typeof APP_CONFIG !== 'undefined' && APP_CONFIG.tituloPanel) || 'Panel Reservas Demo'}
+                            </h1>
+                            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300 border border-amber-200/70 dark:border-amber-500/40 shrink-0">
+                                DEMO
+                            </span>
+                        </div>
+                        <p className="text-xs text-gray-500 dark:text-stone-400 truncate">
+                            {reservas.length} reservas
+                            {avisoResp && (
+                                <span className="ml-1 text-yellow-600 dark:text-yellow-500 font-bold">
+                                    {' · ⚠️ Respaldo pendiente'}
+                                </span>
+                            )}
+                        </p>
                     </div>
                 </div>
                 <div className="relative flex items-center gap-1">
@@ -1988,7 +2002,7 @@ function aplicarPlantilla(r, texto) {
     const fs = new Date(r.fechaFin + 'T12:00:00').toLocaleDateString('es-CL', { weekday: 'long', day: 'numeric', month: 'long' });
     const total = (parseFloat(r.precioTotal) || 0).toLocaleString('es-CL');
     const saldoStr = saldo.toLocaleString('es-CL');
-    const nombreNegocio = (typeof APP_CONFIG !== 'undefined' && APP_CONFIG.nombreNegocio) || 'Cabañas Eli';
+    const nombreNegocio = (typeof APP_CONFIG !== 'undefined' && APP_CONFIG.nombreNegocio) || 'Demo Cabañas';
     return (texto || '')
         .replace(/\{cliente\}/gi, r.cliente || '')
         .replace(/\{cabana\}/gi, cabanaInfo.nombre || '')
